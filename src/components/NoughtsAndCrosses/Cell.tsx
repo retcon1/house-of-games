@@ -10,5 +10,3 @@ export const Cell = ({ value, onClick }: CellProps) => {
     </div>
   );
 };
-
-export default Cell;
