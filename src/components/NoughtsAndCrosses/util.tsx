@@ -47,7 +47,6 @@ export const aiMove = (board: string[]) => {
       bestMove = move;
     }
   }
-  console.log(bestMove, bestScore);
   return bestMove;
 };
 

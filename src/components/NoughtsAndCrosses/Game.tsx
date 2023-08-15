@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { aiMove, calculateWinner } from "./util";
+import { applyButtonAnimation } from "../../utils/buttonAnimation";
 
 export const Game = () => {
   const [board, setBoard] = useState<string[]>(Array(9).fill(null));
@@ -8,6 +9,14 @@ export const Game = () => {
   const [xScore, setXScore] = useState(0);
   const [oScore, setOScore] = useState(0);
   const [ai, setAi] = useState(false);
+  const buttonResetRef = useRef<HTMLDivElement | null>(null);
+  const buttonAiRef = useRef<HTMLDivElement | null>(null);
+
+  // used for button animations
+  useEffect(() => {
+    applyButtonAnimation(buttonAiRef);
+    applyButtonAnimation(buttonResetRef);
+  });
 
   const cellClick = (index: number) => {
     const newBoard = [...board];
@@ -32,6 +41,16 @@ export const Game = () => {
     }
   };
 
+  const aiClick = () => {
+    setXIsNext(true);
+    setBoard(Array(9).fill(null));
+    setXScore(0);
+    setOScore(0);
+    setAi(!ai);
+  };
+
+  const winner = calculateWinner(board);
+
   const resetClick = () => {
     if (winner === "O") {
       setOScore(oScore + 1);
@@ -41,14 +60,6 @@ export const Game = () => {
     setBoard(Array(9).fill(null));
     setXIsNext(true);
   };
-
-  const aiClick = () => {
-    setXIsNext(true);
-    setBoard(Array(9).fill(null));
-    setAi(!ai);
-  };
-
-  const winner = calculateWinner(board);
 
   const status = winner
     ? `Winner: ${winner}`
@@ -64,12 +75,16 @@ export const Game = () => {
       ) : null}
       <div className="status">{status}</div>
       <Board board={board} onClick={cellClick} />
-      <button onClick={resetClick} className="reset-btn">
-        RESET
-      </button>
-      <button onClick={aiClick} className="ai-btn">
-        Play against AI
-      </button>
+      <div className="btn-container" ref={buttonResetRef}>
+        <button onClick={resetClick} className="reset-btn">
+          RESET
+        </button>
+      </div>
+      <div className="btn-container" ref={buttonAiRef}>
+        <button onClick={aiClick} className="ai-btn">
+          {ai ? "Play With Friends" : "Play With AI"}
+        </button>
+      </div>
     </div>
   );
 };

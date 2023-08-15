@@ -7,6 +7,8 @@
 
 body {
   height: 100vh;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.1rem;
 }
 
 .calculator {
@@ -21,6 +23,7 @@ body {
 
     h6 {
       font-size: 1.5rem;
+      font-weight: 600;
       word-wrap: break-word;
       text-align: center;
       padding: 10px;
@@ -66,6 +69,9 @@ body {
   justify-content: center;
   align-items: center;
   h1 {
+    margin-top: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
     font-size: 28px;
     margin-bottom: 20px;
     text-align: center;
@@ -77,15 +83,84 @@ body {
     margin-bottom: 20px;
   }
 
-  button {
+  .effect-container {
+    position: relative;
+    overflow: hidden;
+
+    --effect-name: ripple;
+    --effect-duration: 1000ms;
+    --effect-top: 0px;
+    --effect-left: 0px;
+    --effect-height: 100px;
+    --effect-width: 100px;
+    --effect-color: white;
+
+    &::before {
+      content: "";
+      position: absolute;
+      opacity: 0.3;
+      pointer-events: none;
+
+      top: var(--effect-top);
+      left: var(--effect-left);
+      height: var(--effect-height);
+      width: var(--effect-width);
+      border-radius: 50%;
+      transform: scale(0);
+      background: var(--effect-color);
+    }
+
+    &.active::before {
+      border-radius: 50%;
+      animation: ripple var(--effect-duration) linear forwards;
+    }
+
+    @keyframes ripple {
+      from {
+        transform: scale(0);
+      }
+
+      to {
+        transform: scale(6);
+        opacity: 0;
+      }
+    }
+  }
+
+  .btn-container {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+    position: relative;
+  }
+
+  .reset-btn {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 30px;
-    width: 60px;
-    border-radius: 5px;
-    background-color: red;
-    margin: 2rem;
+    width: 200px;
+    border: none;
+    border-radius: 40px;
+    padding: 15px;
+    font-size: 20px;
+    margin-top: 10px;
+    color: white;
+    background: linear-gradient(90deg, #bd5d19, #fa566f);
+  }
+
+  .ai-btn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    border: none;
+    border-radius: 40px;
+    padding: 20px;
+    font-size: 20px;
+    color: white;
+    background: linear-gradient(90deg, #9383c5, #56e3fa);
   }
 
   .board {
