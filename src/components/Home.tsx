@@ -8,10 +8,16 @@ export const Home = () => {
     navigate("/calculator");
   };
 
+  const wordleNav = (e: any) => {
+    e.preventDefault();
+    navigate("/wordle-clone");
+  };
+
   return (
     <div>
       <h4>House of Games</h4>
       <button onClick={calcNav}>Calculator</button>
+      <button onClick={wordleNav}>Wordle</button>
     </div>
   );
 };

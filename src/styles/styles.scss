@@ -57,3 +57,20 @@ body {
     }
   }
 }
+
+.grid-col {
+  display: grid;
+  grid-template: repeat(6, auto) / repeat(5, auto);
+  .cell {
+    background: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    padding: 80px;
+    border: 1px black;
+    margin: 10px;
+    font-size: 5rem;
+  }
+}
