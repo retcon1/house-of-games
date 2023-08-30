@@ -1,81 +1,113 @@
 import { useState } from "react";
+import { lookupWord } from "../../utils/api";
 
 const Game = () => {
-  const word = ["v", "i", "d", "e", "o"];
+  const word = "video";
   const [guess, setGuess] = useState("");
   const [guessNum, setGuessNum] = useState(0);
+  const [notWord, setNotWord] = useState(false);
+  const [win, setWin] = useState(false);
 
-  const handleGuess = (event: React.FormEvent) => {
+  const handleGuess = async (event: React.FormEvent) => {
     event.preventDefault();
-    const formattedGuess = guess.toLowerCase().split("");
-    for (let i = 0; i < word.length; i++) {
-      let cell = document.querySelector(
-        `.guess${guessNum + 1}-${i}`
-      ) as HTMLElement;
-      if (cell) {
-        cell.textContent = formattedGuess[i];
-        if (word[i] === formattedGuess[i]) {
-          cell.style.backgroundColor = "green";
-        } else if (word.includes(formattedGuess[i])) {
-          cell.style.backgroundColor = "yellow";
-        } else {
-          cell.style.backgroundColor = "red";
-        }
+    setNotWord(false);
+
+    // checks if user got the word, skips everything else
+    if (guess === word) {
+      const cells = document.querySelectorAll(`.guess${guessNum + 1}`);
+      // for (const cell of cells) {
+      //   (cell as HTMLElement).style.backgroundColor = "green";
+      //   (cell as HTMLElement).textContent = word[0];
+      // }
+      for (let i = 0; i < word.length; i++) {
+        (cells[i] as HTMLElement).style.backgroundColor = "green";
+        (cells[i] as HTMLElement).textContent = word[i];
       }
+
+      setWin(true);
     }
 
-    // Use the functional form of setGuessNum and setGuess
-    setGuessNum((prevGuessNum) => prevGuessNum + 1);
-    setGuess("");
+    // checks if the word is real
+    else if (await lookupWord(guess)) {
+      const formattedGuess = guess.toLowerCase().split("");
+      for (let i = 0; i < word.length; i++) {
+        let cell = document.querySelector(
+          `.square-${guessNum + 1}-${i}`
+        ) as HTMLElement;
+
+        if (cell) {
+          cell.textContent = formattedGuess[i];
+          if (word[i] === formattedGuess[i]) {
+            cell.style.backgroundColor = "green";
+          } else if (word.includes(formattedGuess[i])) {
+            cell.style.backgroundColor = "yellow";
+          } else {
+            cell.style.backgroundColor = "red";
+          }
+        }
+      }
+
+      setGuessNum(guessNum + 1);
+      setGuess("");
+    } else {
+      setNotWord(true);
+      setGuess("");
+    }
   };
 
   return (
     <>
-      <form className="Input" onSubmit={handleGuess}>
-        <input
-          value={guess}
-          onChange={(event) => setGuess(event.target.value)}
-          maxLength={5}
-        />
-        <button type="submit" disabled={guess.length !== 5 || guessNum === 5}>
-          Make Your Guess
-        </button>
-      </form>
+      {notWord ? <h5 className="warn-msg"> That's not a word! </h5> : null}
+      {win ? (
+        <h5 className="win-msg"> Congrats! You got the word! </h5>
+      ) : (
+        <form className="Input" onSubmit={handleGuess}>
+          <input
+            value={guess}
+            onChange={(event) => setGuess(event.target.value)}
+            maxLength={5}
+          />
+          <button type="submit" disabled={guess.length !== 5 || guessNum === 5}>
+            Make Your Guess
+          </button>
+        </form>
+      )}
+
       <section className="grid-col">
         <>
-          <div className="cell guess1-0"></div>
-          <div className="cell guess1-1"></div>
-          <div className="cell guess1-2"></div>
-          <div className="cell guess1-3"></div>
-          <div className="cell guess1-4"></div>
+          <div className="cell guess1 square-1-0"></div>
+          <div className="cell guess1 square-1-1"></div>
+          <div className="cell guess1 square-1-2"></div>
+          <div className="cell guess1 square-1-3"></div>
+          <div className="cell guess1 square-1-4"></div>
         </>
         <>
-          <div className="cell guess2-0"></div>
-          <div className="cell guess2-1"></div>
-          <div className="cell guess2-2"></div>
-          <div className="cell guess2-3"></div>
-          <div className="cell guess2-4"></div>
+          <div className="cell guess2 square-2-0"></div>
+          <div className="cell guess2 square-2-1"></div>
+          <div className="cell guess2 square-2-2"></div>
+          <div className="cell guess2 square-2-3"></div>
+          <div className="cell guess2 square-2-4"></div>
         </>
         <>
-          <div className="cell guess3-0"></div>
-          <div className="cell guess3-1"></div>
-          <div className="cell guess3-2"></div>
-          <div className="cell guess3-3"></div>
-          <div className="cell guess3-4"></div>
+          <div className="cell guess3 square-3-0"></div>
+          <div className="cell guess3 square-3-1"></div>
+          <div className="cell guess3 square-3-2"></div>
+          <div className="cell guess3 square-3-3"></div>
+          <div className="cell guess3 square-3-4"></div>
         </>
         <>
-          <div className="cell guess4-0"></div>
-          <div className="cell guess4-1"></div>
-          <div className="cell guess4-2"></div>
-          <div className="cell guess4-3"></div>
-          <div className="cell guess4-4"></div>
+          <div className="cell guess4 square-4-0"></div>
+          <div className="cell guess4 square-4-1"></div>
+          <div className="cell guess4 square-4-2"></div>
+          <div className="cell guess4 square-4-3"></div>
+          <div className="cell guess4 square-4-4"></div>
         </>
         <>
-          <div className="cell guess5-0"></div>
-          <div className="cell guess5-1"></div>
-          <div className="cell guess5-2"></div>
-          <div className="cell guess5-3"></div>
-          <div className="cell guess5-4"></div>
+          <div className="cell guess5 square-5-0"></div>
+          <div className="cell guess5 square-5-1"></div>
+          <div className="cell guess5 square-5-2"></div>
+          <div className="cell guess5 square-5-3"></div>
+          <div className="cell guess5 square-5-4"></div>
         </>
       </section>
     </>
