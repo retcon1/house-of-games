@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { lookupWord } from "../../utils/api";
+import { generate } from "random-words";
 
 const Game = () => {
-  const word = "video";
-  const [guess, setGuess] = useState("");
-  const [guessNum, setGuessNum] = useState(0);
-  const [notWord, setNotWord] = useState(false);
-  const [win, setWin] = useState(false);
+  const [word, setWord] = useState<string>("");
+
+  useEffect(() => {
+    // Generate the word once when the component mounts
+    const generatedWord = generate({ minLength: 5, maxLength: 5 }).toString();
+    setWord(generatedWord);
+    console.log(generatedWord);
+  }, []); // Empty dependency array ensures this effect runs only once
+
+  const [guess, setGuess] = useState<string>("");
+  const [guessNum, setGuessNum] = useState<number>(0);
+  const [notWord, setNotWord] = useState<boolean>(false);
+  const [win, setWin] = useState<boolean>(false);
 
   const handleGuess = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -15,10 +24,6 @@ const Game = () => {
     // checks if user got the word, skips everything else
     if (guess === word) {
       const cells = document.querySelectorAll(`.guess${guessNum + 1}`);
-      // for (const cell of cells) {
-      //   (cell as HTMLElement).style.backgroundColor = "green";
-      //   (cell as HTMLElement).textContent = word[0];
-      // }
       for (let i = 0; i < word.length; i++) {
         (cells[i] as HTMLElement).style.backgroundColor = "green";
         (cells[i] as HTMLElement).textContent = word[i];
