@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { lookupWord } from "../../utils/api";
 import { generate } from "random-words";
+import { dupeLetter } from "../../utils/dupeLetter";
 
 const Game = () => {
   const [word, setWord] = useState<string>("");
@@ -32,6 +33,9 @@ const Game = () => {
       setWin(true);
     }
 
+    //TODO Create logic that checks if a letter has already been guessed, so that two don't show up as yellow when there's only one in the word
+    //TODO Make sure that logic accounts for if a letter is in the right place later, e.g. no yellow letter, then green when only the green should be highlighted
+
     // checks if the word is real
     else if (await lookupWord(guess)) {
       const formattedGuess = guess.toLowerCase().split("");
@@ -45,6 +49,12 @@ const Game = () => {
           if (word[i] === formattedGuess[i]) {
             cell.style.backgroundColor = "green";
           } else if (word.includes(formattedGuess[i])) {
+            if (
+              formattedGuess.slice(0, i).includes(formattedGuess[i]) &&
+              !dupeLetter(word, formattedGuess[i])
+            ) {
+              cell.style.backgroundColor = "red";
+            }
             cell.style.backgroundColor = "yellow";
           } else {
             cell.style.backgroundColor = "red";
@@ -55,6 +65,7 @@ const Game = () => {
       setGuessNum(guessNum + 1);
       setGuess("");
     } else {
+      // Triggers not a word warning
       setNotWord(true);
       setGuess("");
     }
@@ -113,6 +124,13 @@ const Game = () => {
           <div className="cell guess5 square-5-2"></div>
           <div className="cell guess5 square-5-3"></div>
           <div className="cell guess5 square-5-4"></div>
+        </>
+        <>
+          <div className="cell guess6 square-6-0"></div>
+          <div className="cell guess6 square-6-1"></div>
+          <div className="cell guess6 square-6-2"></div>
+          <div className="cell guess6 square-6-3"></div>
+          <div className="cell guess6 square-6-4"></div>
         </>
       </section>
     </>
