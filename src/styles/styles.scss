@@ -62,21 +62,146 @@ body {
 
 // Wordle Clone
 
+.wordle-game {
+  text-align: center;
+  background-color: #121212;
+  width: 100vw;
+  height: 100vh;
+  color: white;
 
+  nav {
+    height: 60px;
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px solid grey;
+    display: grid;
+    place-items: center;
+  }
 
-.grid-col {
-  display: grid;
-  grid-template: repeat(6, auto) / repeat(5, auto);
-  .cell {
-    background: grey;
+  nav h1 {
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    color: white;
+    font-size: 45px;
+  }
+
+  .game {
+    background-color: #121212;
+    width: 100vw;
+    height: calc(120vh - 170px);
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
-    padding: 80px;
-    border: 1px black;
-    margin: 10px;
-    font-size: 5rem;
+    padding-top: 50px;
+    flex-direction: column;
+
+    .board {
+      width: 450px;
+      height: 550px;
+      border: 1px solid black;
+      display: flex;
+      flex-direction: column;
+
+      .row {
+        flex: 33%;
+        display: flex;
+        flex-direction: row;
+        margin: 5px;
+
+        .letter {
+          flex: 33%;
+          height: 100%;
+          border: 1px solid grey;
+          margin: 5px;
+          display: grid;
+          place-items: center;
+          font-size: 30px;
+          font-weight: bolder;
+          color: white;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+      }
+    }
+
+    .keyboard {
+      width: 700px;
+      height: 300px;
+      margin-top: 60px;
+
+      .line1 {
+        flex: 33%;
+        display: flex;
+        flex-direction: row;
+        display: flex;
+        justify-content: center;
+        margin: 5px;
+      }
+
+      .line2 {
+        flex: 33%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 5px;
+      }
+
+      .line3 {
+        flex: 33%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 5px;
+      }
+
+      .key {
+        width: 50px;
+        height: 70px;
+        margin: 5px;
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+        background-color: grey;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: pointer;
+      }
+    }
   }
 }
+
+#correct {
+  background-color: #528d4e;
+}
+
+#almost {
+  background-color: #b49f39;
+}
+
+#error {
+  background-color: #3a393c;
+}
+
+#big {
+  width: 100px;
+}
+
+#disabled {
+  background-color: #3a393c;
+}
+
+// .grid-col {
+//   display: grid;
+//   grid-template: repeat(6, auto) / repeat(5, auto);
+//   .cell {
+//     background: grey;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     width: 100px;
+//     height: 100px;
+//     padding: 80px;
+//     border: 1px black;
+//     margin: 10px;
+//     font-size: 5rem;
+//   }
+// }
