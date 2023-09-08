@@ -1,31 +1,14 @@
-import React, { createContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Board } from "./Board";
-import { boardMatrix } from "../../utils/boardMatrix";
+import { boardMatrix } from "./utils/boardMatrix";
 import Keyboard from "./Keyboard";
+import { generateWordSet } from "./utils/wordSet";
+import { GameContext } from "./utils/GameContext";
+import GameOver from "./GameOver";
 
-type BoardMatrix = string[][];
-
-interface GameContextType {
-  board: BoardMatrix;
-  setBoard: React.Dispatch<React.SetStateAction<BoardMatrix>>;
-  currAttempt: { attempt: number; letterPos: number };
-  setCurrAttempt: React.Dispatch<
-    React.SetStateAction<{ attempt: number; letterPos: number }>
-  >;
-  onSelectLetter: (arg0: string) => void;
-  onDelete: () => void;
-  onEnter: () => void;
-}
-
-export const GameContext = createContext<GameContextType>({
-  board: boardMatrix, // Provide a default value for board
-  setBoard: () => {}, // Provide a default value for setBoard
-  currAttempt: { attempt: 0, letterPos: 0 },
-  setCurrAttempt: () => {},
-  onSelectLetter: () => {},
-  onDelete: () => {},
-  onEnter: () => {},
-});
+//TODO Make sure the game doesn't end if you guess a non-existent word on the last guess
+//TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
+//TODO Re-integrate dictionary checking/random-word word gen, at least have as an option for players
 
 function Game() {
   const [board, setBoard] = useState(boardMatrix);
@@ -33,6 +16,20 @@ function Game() {
     attempt: 0,
     letterPos: 0,
   });
+  const [wordSet, setWordSet] = useState(new Set());
+  const [disabledLetters, setDisabledLetters] = useState([""]);
+  const [correctWord, setCorrectWord] = useState("");
+  const [gameOver, setGameOver] = useState({
+    gameOver: false,
+    guessedWord: false,
+  });
+
+  useEffect(() => {
+    generateWordSet().then((words) => {
+      setWordSet(words.wordSet);
+      setCorrectWord(words.todaysWord.toUpperCase());
+    });
+  }, []);
 
   const onSelectLetter = (keyVal: string) => {
     if (currAttempt.letterPos > 4) return;
@@ -52,7 +49,26 @@ function Game() {
 
   const onEnter = () => {
     if (currAttempt.letterPos !== 5) return;
-    setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+
+    let currGuess = "";
+    for (let i = 0; i < 5; i++) {
+      currGuess += board[currAttempt.attempt][i];
+    }
+
+    if (wordSet.has(currGuess.toLowerCase())) {
+      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+    } else {
+      alert("Word not found");
+    }
+
+    if (currGuess === correctWord) {
+      setGameOver({ gameOver: true, guessedWord: true });
+      return;
+    }
+
+    if (currAttempt.attempt === 5) {
+      setGameOver({ gameOver: true, guessedWord: false });
+    }
   };
 
   return (
@@ -69,11 +85,16 @@ function Game() {
           onSelectLetter,
           onDelete,
           onEnter,
+          correctWord,
+          disabledLetters,
+          setDisabledLetters,
+          gameOver,
+          setGameOver,
         }}
       >
         <div className="game">
           <Board />
-          <Keyboard />
+          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
         </div>
       </GameContext.Provider>
     </div>

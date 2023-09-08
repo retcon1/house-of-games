@@ -1,7 +1,15 @@
 import React, { useContext } from "react";
-import { GameContext } from "./Game";
+import { GameContext } from "./utils/GameContext";
 
-function Key({ keyVal, bigKey }: { keyVal: string; bigKey: boolean }) {
+function Key({
+  keyVal,
+  bigKey,
+  disabled,
+}: {
+  keyVal: string;
+  bigKey: boolean;
+  disabled: boolean | null;
+}) {
   const { onSelectLetter, onDelete, onEnter } = useContext(GameContext);
 
   const selectLetter = () => {
@@ -15,7 +23,11 @@ function Key({ keyVal, bigKey }: { keyVal: string; bigKey: boolean }) {
   };
 
   return (
-    <div className="key" id={bigKey ? "big" : undefined} onClick={selectLetter}>
+    <div
+      className="key"
+      id={bigKey ? "big" : disabled ? "disabled" : undefined}
+      onClick={selectLetter}
+    >
       {keyVal}
     </div>
   );
