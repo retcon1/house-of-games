@@ -6,7 +6,6 @@ import { generateWordSet } from "./utils/wordSet";
 import { GameContext } from "./utils/GameContext";
 import GameOver from "./GameOver";
 
-//TODO Make sure the game doesn't end if you guess a non-existent word on the last guess
 //TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
 //TODO Re-integrate dictionary checking/random-word word gen, at least have as an option for players
 
@@ -58,7 +57,7 @@ function Game() {
     if (wordSet.has(currGuess.toLowerCase())) {
       setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
     } else {
-      alert("Word not found");
+      alert("Word Not Found");
     }
 
     if (currGuess === correctWord) {
@@ -66,7 +65,7 @@ function Game() {
       return;
     }
 
-    if (currAttempt.attempt === 5) {
+    if (currAttempt.attempt === 5 && wordSet.has(currGuess.toLowerCase())) {
       setGameOver({ gameOver: true, guessedWord: false });
     }
   };
