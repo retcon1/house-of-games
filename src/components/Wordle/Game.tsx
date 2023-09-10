@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { boardMatrix } from "./utils/boardMatrix";
 import Keyboard from "./Keyboard";
@@ -9,7 +9,6 @@ import { generate } from "random-words";
 import { lookupWord } from "./utils/api";
 
 //TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
-//TODO Re-integrate dictionary checking/random-word word gen, at least have as an option for players
 
 function Game() {
   const [board, setBoard] = useState(boardMatrix);
@@ -25,6 +24,8 @@ function Game() {
     guessedWord: false,
   });
   const [dictMode, setDictMode] = useState(false);
+  const dictModeButtonRef = useRef<HTMLButtonElement>(null);
+
   const handleModeChange = () => {
     setBoard([
       ["", "", "", "", ""],
@@ -44,7 +45,14 @@ function Game() {
     });
     setDisabledLetters([""]);
     setDictMode(!dictMode);
+
+    // Removes focus to avoid user making a guess and hitting the btn at same time
+    if (dictModeButtonRef.current) {
+      dictModeButtonRef.current.blur(); // Removes focus from the button
+    }
   };
+
+  console.log("dictMode:", dictMode);
 
   useEffect(() => {
     if (!dictMode) {
@@ -106,6 +114,13 @@ function Game() {
       } else {
         alert("Word Not Found");
       }
+
+      if (
+        currAttempt.attempt === 5 &&
+        (await lookupWord(currGuess.toLowerCase()))
+      ) {
+        setGameOver({ gameOver: true, guessedWord: false });
+      }
     }
 
     if (currGuess === correctWord) {
@@ -141,14 +156,18 @@ function Game() {
           {dictMode ? (
             <>
               <p>Click here to go back to a limited, sensible list of words!</p>
-              <button onClick={handleModeChange}>Word Set Mode</button>
+              <button onClick={handleModeChange} ref={dictModeButtonRef}>
+                Word Set Mode
+              </button>
             </>
           ) : (
             <>
               <p>
                 Click here to expand the word list to the entire dictionary!
               </p>
-              <button onClick={handleModeChange}>Dictionary Mode</button>
+              <button onClick={handleModeChange} ref={dictModeButtonRef}>
+                Dictionary Mode
+              </button>
             </>
           )}
         </div>
