@@ -5,6 +5,8 @@ import Keyboard from "./Keyboard";
 import { generateWordSet } from "./utils/wordSet";
 import { GameContext } from "./utils/GameContext";
 import GameOver from "./GameOver";
+import { generate } from "random-words";
+import { lookupWord } from "./utils/api";
 
 //TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
 //TODO Re-integrate dictionary checking/random-word word gen, at least have as an option for players
@@ -22,15 +24,43 @@ function Game() {
     gameOver: false,
     guessedWord: false,
   });
+  const [dictMode, setDictMode] = useState(false);
+  const handleModeChange = () => {
+    setBoard([
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+    ]);
+    setCurrAttempt({
+      attempt: 0,
+      letterPos: 0,
+    });
+    setGameOver({
+      gameOver: false,
+      guessedWord: false,
+    });
+    setDisabledLetters([""]);
+    setDictMode(!dictMode);
+  };
 
   useEffect(() => {
-    generateWordSet().then((words) => {
-      setWordSet(words.wordSet);
-      setCorrectWord(words.todaysWord.toUpperCase());
-    });
-  }, []);
+    if (!dictMode) {
+      generateWordSet().then((words) => {
+        setWordSet(words.wordSet);
+        setCorrectWord(words.todaysWord.toUpperCase());
+      });
+    } else {
+      setCorrectWord(
+        generate({ minLength: 5, maxLength: 5 }).toString().toUpperCase()
+      );
+    }
+  }, [dictMode]);
 
   const onSelectLetter = (keyVal: string) => {
+    // Prevents more letters being typed if all cells are filled
     if (currAttempt.letterPos > 4) return;
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
@@ -46,27 +76,41 @@ function Game() {
     setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 });
   };
 
-  const onEnter = () => {
+  const onEnter = async () => {
+    // Prevents enter if all letters are not filled
     if (currAttempt.letterPos !== 5) return;
 
+    // Builds guess from inputted letters, ready to compare
     let currGuess = "";
     for (let i = 0; i < 5; i++) {
       currGuess += board[currAttempt.attempt][i];
     }
 
-    if (wordSet.has(currGuess.toLowerCase())) {
-      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
-    } else {
-      alert("Word Not Found");
+    // Handles guess logic using limited word set
+    if (!dictMode) {
+      if (wordSet.has(currGuess.toLowerCase())) {
+        setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+      } else {
+        alert("Word Not Found");
+      }
+
+      if (currAttempt.attempt === 5 && wordSet.has(currGuess.toLowerCase())) {
+        setGameOver({ gameOver: true, guessedWord: false });
+      }
+    }
+
+    // Handles guess logic with call to dictionary API
+    if (dictMode) {
+      if (await lookupWord(currGuess.toLowerCase())) {
+        setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+      } else {
+        alert("Word Not Found");
+      }
     }
 
     if (currGuess === correctWord) {
       setGameOver({ gameOver: true, guessedWord: true });
       return;
-    }
-
-    if (currAttempt.attempt === 5 && wordSet.has(currGuess.toLowerCase())) {
-      setGameOver({ gameOver: true, guessedWord: false });
     }
   };
 
@@ -94,6 +138,19 @@ function Game() {
         <div className="game">
           <Board />
           {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+          {dictMode ? (
+            <>
+              <p>Click here to go back to a limited, sensible list of words!</p>
+              <button onClick={handleModeChange}>Word Set Mode</button>
+            </>
+          ) : (
+            <>
+              <p>
+                Click here to expand the word list to the entire dictionary!
+              </p>
+              <button onClick={handleModeChange}>Dictionary Mode</button>
+            </>
+          )}
         </div>
       </GameContext.Provider>
     </div>
