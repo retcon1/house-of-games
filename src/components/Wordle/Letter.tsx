@@ -10,8 +10,11 @@ function Letter({
 }) {
   const { board, correctWord, currAttempt, setDisabledLetters } =
     useContext(GameContext);
+
+  // Selects the letter in the board matrix
   const letter = board[attemptVal][letterPos];
 
+  // Initiates variables if they meet the requirements
   const correct = correctWord[letterPos] === letter;
   const almost = !correct && letter !== "" && correctWord.includes(letter);
 

@@ -88,7 +88,7 @@ body {
   .game {
     background-color: #121212;
     width: 100vw;
-    height: calc(120vh - 170px);
+    height: 100vh;
     display: flex;
     align-items: center;
     padding-top: 50px;
@@ -188,20 +188,3 @@ body {
 #disabled {
   background-color: #3a393c;
 }
-
-// .grid-col {
-//   display: grid;
-//   grid-template: repeat(6, auto) / repeat(5, auto);
-//   .cell {
-//     background: grey;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     width: 100px;
-//     height: 100px;
-//     padding: 80px;
-//     border: 1px black;
-//     margin: 10px;
-//     font-size: 5rem;
-//   }
-// }

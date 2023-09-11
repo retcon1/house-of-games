@@ -7,6 +7,7 @@ import { GameContext } from "./utils/GameContext";
 import GameOver from "./GameOver";
 import { generate } from "random-words";
 import { lookupWord } from "./utils/api";
+import { applyButtonAnimation } from "../../utils/buttonAnimation";
 
 //TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
 
@@ -25,6 +26,7 @@ function Game() {
   });
   const [dictMode, setDictMode] = useState(false);
   const dictModeButtonRef = useRef<HTMLButtonElement>(null);
+  const modeBtn = useRef<HTMLDivElement | null>(null); // needed for animation
 
   const handleModeChange = () => {
     setBoard([
@@ -52,9 +54,8 @@ function Game() {
     }
   };
 
-  console.log("dictMode:", dictMode);
-
   useEffect(() => {
+    applyButtonAnimation(modeBtn);
     if (!dictMode) {
       generateWordSet().then((words) => {
         setWordSet(words.wordSet);
@@ -156,18 +157,30 @@ function Game() {
           {dictMode ? (
             <>
               <p>Click here to go back to a limited, sensible list of words!</p>
-              <button onClick={handleModeChange} ref={dictModeButtonRef}>
-                Word Set Mode
-              </button>
+              <div className="btn-container" ref={modeBtn}>
+                <button
+                  className="mode-btn"
+                  onClick={handleModeChange}
+                  ref={dictModeButtonRef}
+                >
+                  Word Set Mode
+                </button>
+              </div>
             </>
           ) : (
             <>
               <p>
                 Click here to expand the word list to the entire dictionary!
               </p>
-              <button onClick={handleModeChange} ref={dictModeButtonRef}>
-                Dictionary Mode
-              </button>
+              <div className="btn-container" ref={modeBtn}>
+                <button
+                  className="mode-btn"
+                  onClick={handleModeChange}
+                  ref={dictModeButtonRef}
+                >
+                  Dictionary Mode
+                </button>
+              </div>
             </>
           )}
         </div>
