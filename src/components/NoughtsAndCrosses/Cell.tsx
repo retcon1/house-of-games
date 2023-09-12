@@ -5,8 +5,8 @@ interface CellProps {
 
 export const Cell = ({ value, onClick }: CellProps) => {
   return (
-    <div className="cell" onClick={onClick}>
-      {value}
+    <div className={`cell`} onClick={onClick}>
+      <span className={`${value}`}>{value}</span>
     </div>
   );
 };

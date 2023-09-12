@@ -192,11 +192,43 @@ body {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
+      font-size: 30px;
       background-color: #f0f0f0;
       cursor: pointer;
       &:hover {
         background-color: #e0e0e0;
+      }
+
+      @keyframes drawX {
+        0% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes drawO {
+        0% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .X {
+        color: red;
+        animation: drawX 0.3s ease-in-out; /* Adjust the duration and easing as needed */
+      }
+
+      .O {
+        color: blue;
+        animation: drawO 0.3s ease-in-out; /* Adjust the duration and easing as needed */
       }
     }
   }
