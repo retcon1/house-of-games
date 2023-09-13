@@ -12,6 +12,8 @@ export const Home = () => {
   const wordleNav = (e: MouseEvent) => {
     e.preventDefault();
     navigate("/wordle-clone");
+  };
+
   const noughtsNav = (e: MouseEvent) => {
     e.preventDefault();
     navigate("/noughts-and-crosses");

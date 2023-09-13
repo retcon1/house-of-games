@@ -88,7 +88,7 @@ body {
     font-size: 45px;
   }
 
-  .game {
+  .wordle-container {
     background-color: #121212;
     width: 100vw;
     height: 100vh;
@@ -167,13 +167,37 @@ body {
         color: white;
         font-family: Arial, Helvetica, sans-serif;
         cursor: pointer;
-// TODO: stylise more, add animations to clicks
+      }
+    }
+
+    #correct {
+      background-color: #528d4e;
+    }
+
+    #almost {
+      background-color: #b49f39;
+    }
+
+    #error {
+      background-color: #3a393c;
+    }
+
+    #big {
+      width: 100px;
+    }
+
+    #disabled {
+      background-color: #3a393c;
+    }
+  }
+}
 
 .noughts-and-crosses {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   h1 {
     margin-top: 2rem;
     font-weight: 800;
@@ -338,24 +362,4 @@ body {
       }
     }
   }
-}
-
-#correct {
-  background-color: #528d4e;
-}
-
-#almost {
-  background-color: #b49f39;
-}
-
-#error {
-  background-color: #3a393c;
-}
-
-#big {
-  width: 100px;
-}
-
-#disabled {
-  background-color: #3a393c;
 }

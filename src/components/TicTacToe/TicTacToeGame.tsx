@@ -3,7 +3,7 @@ import { Board } from "./Board";
 import { aiMove, calculateWinner } from "./util";
 import { applyButtonAnimation } from "../../utils/buttonAnimation";
 
-export const Game = () => {
+export const TicTacToeGame = () => {
   const [board, setBoard] = useState<string[]>(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState<boolean>(true);
   const [xScore, setXScore] = useState(0);

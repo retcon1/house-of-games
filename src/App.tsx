@@ -1,9 +1,9 @@
 import "./styles/styles.scss";
 import { Route, Routes } from "react-router-dom";
-import Calculator from "./components/Calculator/Calculator";
-import Home from "./components/Home";
-import Game from "./components/Wordle/Game";
-
+import { Calculator } from "./components/Calculator/Calculator";
+import { Home } from "./components/Home";
+import { WordleGame } from "./components/Wordle/WordleGame";
+import { TicTacToeGame } from "./components/TicTacToe/TicTacToeGame";
 
 function App() {
   return (
@@ -11,8 +11,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/calculator" element={<Calculator />} />
-        <Route path="/wordle-clone" element={<Game />} />
-        <Route path="/noughts-and-crosses" element={<Game />} />
+        <Route path="/wordle-clone" element={<WordleGame />} />
+        <Route path="/noughts-and-crosses" element={<TicTacToeGame />} />
       </Routes>
     </div>
   );

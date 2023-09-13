@@ -11,7 +11,7 @@ import { applyButtonAnimation } from "../../utils/buttonAnimation";
 
 //TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
 
-function Game() {
+export const WordleGame = () => {
   const [board, setBoard] = useState(boardMatrix);
   const [currAttempt, setCurrAttempt] = useState({
     attempt: 0,
@@ -151,7 +151,7 @@ function Game() {
           setGameOver,
         }}
       >
-        <div className="game">
+        <div className="wordle-container">
           <Board />
           {gameOver.gameOver ? <GameOver /> : <Keyboard />}
           {dictMode ? (
@@ -188,5 +188,3 @@ function Game() {
     </div>
   );
 }
-
-export default Game;
