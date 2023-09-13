@@ -9,6 +9,9 @@ export const Home = () => {
     navigate("/calculator");
   };
 
+  const wordleNav = (e: MouseEvent) => {
+    e.preventDefault();
+    navigate("/wordle-clone");
   const noughtsNav = (e: MouseEvent) => {
     e.preventDefault();
     navigate("/noughts-and-crosses");
@@ -18,6 +21,7 @@ export const Home = () => {
     <div>
       <h4>House of Games</h4>
       <button onClick={calcNav}>Calculator</button>
+      <button onClick={wordleNav}>Wordle</button>
       <button onClick={noughtsNav}>Noughts & Crosses</button>
     </div>
   );
