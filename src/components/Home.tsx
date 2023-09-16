@@ -20,11 +20,17 @@ export const Home = () => {
   };
 
   return (
-    <div>
-      <h4>House of Games</h4>
-      <button onClick={calcNav}>Calculator</button>
-      <button onClick={wordleNav}>Wordle</button>
-      <button onClick={noughtsNav}>Noughts & Crosses</button>
+    <div className="home-screen">
+      <h1 className="title">House of Games</h1>
+      <button className="game-btn" onClick={calcNav}>
+        Calculator
+      </button>
+      <button className="game-btn" onClick={wordleNav}>
+        Wordle
+      </button>
+      <button className="game-btn" onClick={noughtsNav}>
+        Noughts & Crosses
+      </button>
     </div>
   );
 };

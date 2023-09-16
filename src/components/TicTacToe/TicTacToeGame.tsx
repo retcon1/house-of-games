@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { aiMove, calculateWinner } from "./util";
 import { applyButtonAnimation } from "../../utils/buttonAnimation";
+import FancyButton from "../../utils/FancyButton";
 
 export const TicTacToeGame = () => {
   const [board, setBoard] = useState<string[]>(Array(9).fill(null));
@@ -9,14 +10,14 @@ export const TicTacToeGame = () => {
   const [xScore, setXScore] = useState(0);
   const [oScore, setOScore] = useState(0);
   const [ai, setAi] = useState(false);
-  const buttonResetRef = useRef<HTMLDivElement | null>(null);
-  const buttonAiRef = useRef<HTMLDivElement | null>(null);
+  const buttonResetRef = useRef<HTMLButtonElement | null>(null);
+  const buttonAiRef = useRef<HTMLButtonElement | null>(null);
 
   // used for button animations
   useEffect(() => {
     applyButtonAnimation(buttonAiRef);
     applyButtonAnimation(buttonResetRef);
-  });
+  }, []);
 
   const cellClick = (index: number) => {
     const newBoard = [...board];
@@ -75,15 +76,21 @@ export const TicTacToeGame = () => {
       ) : null}
       <div className="status">{status}</div>
       <Board board={board} onClick={cellClick} />
-      <div className="btn-container" ref={buttonResetRef}>
-        <button onClick={resetClick} className="reset-btn">
-          RESET
-        </button>
+      <div className="fancy-btn-container">
+        <FancyButton
+          className="fancy-btn reset"
+          ref={buttonResetRef}
+          onClick={resetClick}
+          text="Reset"
+        />
       </div>
-      <div className="btn-container" ref={buttonAiRef}>
-        <button onClick={aiClick} className="ai-btn">
-          {ai ? "Play With Friends" : "Play With AI"}
-        </button>
+      <div className="fancy-btn-container">
+        <FancyButton
+          className="fancy-btn ai"
+          ref={buttonAiRef}
+          onClick={aiClick}
+          text={ai ? "Play With Friends" : "Play With AI"}
+        />
       </div>
     </div>
   );

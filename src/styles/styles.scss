@@ -11,6 +11,88 @@ body {
   font-size: 1.1rem;
 }
 
+// Universal components
+
+.fancy-btn-container {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+}
+
+.fancy-btn {
+  cursor: pointer;
+  display: block;
+  width: 200px;
+  border: none;
+  border-radius: 40px;
+  padding: 15px;
+  font-size: 20px;
+  color: white;
+  &:hover {
+    box-shadow: 0 8px 10px inset rgba(0, 0, 0, 0.15);
+  }
+}
+
+.effect-container {
+  content: "";
+  position: relative;
+  overflow: hidden;
+
+  --effect-top: 0px;
+  --effect-left: 0px;
+  --effect-height: 100px;
+  --effect-width: 100px;
+  --effect-color: white;
+  --effect-duration: 1000ms;
+
+  &::before {
+    content: "";
+    position: absolute;
+    opacity: 0.3;
+    pointer-events: none;
+
+    top: var(--effect-top);
+    left: var(--effect-left);
+    height: var(--effect-height);
+    width: var(--effect-width);
+    border-radius: 50%;
+    transform: scale(0);
+    background: var(--effect-color);
+  }
+
+  &.active::before {
+    animation: ripple 1000ms linear forwards;
+  }
+
+  @keyframes ripple {
+    from {
+      transform: scale(0);
+      opacity: 0.3;
+    }
+
+    to {
+      transform: scale(6);
+      opacity: 0;
+    }
+  }
+}
+
+.home-screen {
+  margin: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .title {
+    font-size: 80px;
+  }
+
+  .game-btn {
+    margin-top: 1rem;
+  }
+}
+
 // Calculator
 
 .calculator {
@@ -89,12 +171,12 @@ body {
   }
 
   .wordle-container {
-    background-color: #121212;
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     align-items: center;
-    padding-top: 50px;
+    padding-top: 20px;
+    margin-bottom: 2px;
     flex-direction: column;
 
     .board {
@@ -128,7 +210,7 @@ body {
     .keyboard {
       width: 700px;
       height: 300px;
-      margin-top: 60px;
+      margin-top: 20px;
 
       .line1 {
         flex: 33%;
@@ -189,6 +271,14 @@ body {
     #disabled {
       background-color: #3a393c;
     }
+
+    p {
+      margin-top: 1rem;
+    }
+  }
+
+  .fancy-btn.mode-btn {
+    background: linear-gradient(90deg, #2919bd, #56faa5);
   }
 }
 
@@ -221,90 +311,12 @@ body {
     font-size: 25px;
   }
 
-  .effect-container {
-    position: relative;
-    overflow: hidden;
-
-    --effect-name: ripple;
-    --effect-duration: 1000ms;
-    --effect-top: 0px;
-    --effect-left: 0px;
-    --effect-height: 100px;
-    --effect-width: 100px;
-    --effect-color: white;
-
-    &::before {
-      content: "";
-      position: absolute;
-      opacity: 0.3;
-      pointer-events: none;
-
-      top: var(--effect-top);
-      left: var(--effect-left);
-      height: var(--effect-height);
-      width: var(--effect-width);
-      border-radius: 50%;
-      transform: scale(0);
-      background: var(--effect-color);
-    }
-
-    &.active::before {
-      border-radius: 50%;
-      animation: ripple var(--effect-duration) linear forwards;
-    }
-
-    @keyframes ripple {
-      from {
-        transform: scale(0);
-      }
-
-      to {
-        transform: scale(6);
-        opacity: 0;
-      }
-    }
-  }
-
-  .btn-container {
-    display: block;
-    width: 200px;
-    margin: 10px auto;
-    position: relative;
-  }
-
-  .reset-btn {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    border: none;
-    border-radius: 40px;
-    padding: 15px;
-    font-size: 20px;
-    margin-top: 10px;
-    color: white;
+  .fancy-btn.ai {
     background: linear-gradient(90deg, #bd5d19, #fa566f);
-    &:hover {
-      box-shadow: 0 8px 10px inset rgba(0, 0, 0, 0.15);
-    }
   }
 
-  .ai-btn {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    border: none;
-    border-radius: 40px;
-    padding: 20px;
-    font-size: 20px;
-    color: white;
+  .fancy-btn.reset {
     background: linear-gradient(90deg, #9383c5, #56e3fa);
-    &:hover {
-      box-shadow: 0 8px 10px inset rgba(0, 0, 0, 0.15);
-    }
   }
 
   .board {
