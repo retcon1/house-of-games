@@ -23,21 +23,13 @@ export const Home = () => {
   return (
     <div className="home-screen">
       <h1 className="title">House of Games</h1>
-      <FancyButton
-        className="game-btn"
-        onClick={calcNav}
-        text="Calculator"
-      ></FancyButton>
-      <FancyButton
-        className="game-btn"
-        onClick={wordleNav}
-        text="Wordle"
-      ></FancyButton>
+      <FancyButton className="game-btn" onClick={calcNav} text="Calculator" />
+      <FancyButton className="game-btn" onClick={wordleNav} text="Wordle" />
       <FancyButton
         className="game-btn"
         onClick={noughtsNav}
         text="Noughts & Crosses"
-      ></FancyButton>
+      />
     </div>
   );
 };
