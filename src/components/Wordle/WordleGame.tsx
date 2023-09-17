@@ -151,26 +151,22 @@ export const WordleGame = () => {
       {dictMode ? (
         <>
           <p>Click here to go back to a limited, sensible list of words!</p>
-          <div className="fancy-btn-container">
-            <FancyButton
-              className="fancy-btn mode-btn"
-              onClick={handleModeChange}
-              ref={modeBtnRef}
-              text="Word Set Mode"
-            />
-          </div>
+          <FancyButton
+            className="mode-btn"
+            onClick={handleModeChange}
+            ref={modeBtnRef}
+            text="Word Set Mode"
+          />
         </>
       ) : (
         <>
           <p>Click here to expand the word list to the entire dictionary!</p>
-          <div className="fancy-btn-container">
-            <FancyButton
-              className="fancy-btn mode-btn"
-              onClick={handleModeChange}
-              ref={modeBtnRef}
-              text="Dictionary Mode"
-            />
-          </div>
+          <FancyButton
+            className="mode-btn"
+            onClick={handleModeChange}
+            ref={modeBtnRef}
+            text="Dictionary Mode"
+          />
         </>
       )}
     </div>

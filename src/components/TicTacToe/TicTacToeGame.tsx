@@ -76,22 +76,18 @@ export const TicTacToeGame = () => {
       ) : null}
       <div className="status">{status}</div>
       <Board board={board} onClick={cellClick} />
-      <div className="fancy-btn-container">
-        <FancyButton
-          className="fancy-btn reset"
-          ref={buttonResetRef}
-          onClick={resetClick}
-          text="Reset"
-        />
-      </div>
-      <div className="fancy-btn-container">
-        <FancyButton
-          className="fancy-btn ai"
-          ref={buttonAiRef}
-          onClick={aiClick}
-          text={ai ? "Play With Friends" : "Play With AI"}
-        />
-      </div>
+      <FancyButton
+        className="reset"
+        ref={buttonResetRef}
+        onClick={resetClick}
+        text="Reset"
+      />
+      <FancyButton
+        className="ai"
+        ref={buttonAiRef}
+        onClick={aiClick}
+        text={ai ? "Play With Friends" : "Play With AI"}
+      />
     </div>
   );
 };

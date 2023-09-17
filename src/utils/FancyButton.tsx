@@ -6,10 +6,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const FancyButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ text, ...props }, ref) => (
-    <button {...props} ref={ref}>
-      {text}
-    </button>
+  ({ text, className, ...props }, ref) => (
+    <div className="fancy-btn-container">
+      <button {...props} ref={ref} className={`fancy-btn ${className}`}>
+        {text}
+      </button>
+    </div>
   )
 );
 
