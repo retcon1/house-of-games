@@ -1,7 +1,6 @@
 import { MouseEvent, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import FancyButton from "../utils/FancyButton";
-import { applyButtonAnimation } from "../utils/buttonAnimation";
 
 export const Home = () => {
   const navigate = useNavigate();
