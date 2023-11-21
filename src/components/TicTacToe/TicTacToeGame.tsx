@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { aiMove, calculateWinner } from "./util";
 import { applyButtonAnimation } from "../../utils/buttonAnimation";
+import FancyButton from "../../utils/FancyButton";
+import { useNavigate } from "react-router-dom";
 
 export const TicTacToeGame = () => {
   const [board, setBoard] = useState<string[]>(Array(9).fill(null));
@@ -9,14 +11,14 @@ export const TicTacToeGame = () => {
   const [xScore, setXScore] = useState(0);
   const [oScore, setOScore] = useState(0);
   const [ai, setAi] = useState(false);
-  const buttonResetRef = useRef<HTMLDivElement | null>(null);
-  const buttonAiRef = useRef<HTMLDivElement | null>(null);
+  const buttonResetRef = useRef<HTMLButtonElement | null>(null);
+  const buttonAiRef = useRef<HTMLButtonElement | null>(null);
 
   // used for button animations
   useEffect(() => {
     applyButtonAnimation(buttonAiRef);
     applyButtonAnimation(buttonResetRef);
-  });
+  }, []);
 
   const cellClick = (index: number) => {
     const newBoard = [...board];
@@ -65,8 +67,15 @@ export const TicTacToeGame = () => {
     ? `Winner: ${winner}`
     : `Next player: ${xIsNext ? "X" : "O"}`;
 
+  const navigate = useNavigate();
+  const homeNav = (e: MouseEvent) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <div className="noughts-and-crosses">
+      <FancyButton className="home-btn" onClick={homeNav} text="Go Home" />
       <h1>Noughts & Crosses</h1>
       {oScore || xScore ? (
         <div className="scoreboard">
@@ -75,16 +84,18 @@ export const TicTacToeGame = () => {
       ) : null}
       <div className="status">{status}</div>
       <Board board={board} onClick={cellClick} />
-      <div className="btn-container" ref={buttonResetRef}>
-        <button onClick={resetClick} className="reset-btn">
-          RESET
-        </button>
-      </div>
-      <div className="btn-container" ref={buttonAiRef}>
-        <button onClick={aiClick} className="ai-btn">
-          {ai ? "Play With Friends" : "Play With AI"}
-        </button>
-      </div>
+      <FancyButton
+        className="reset"
+        ref={buttonResetRef}
+        onClick={resetClick}
+        text="Reset"
+      />
+      <FancyButton
+        className="ai"
+        ref={buttonAiRef}
+        onClick={aiClick}
+        text={ai ? "Play With Friends" : "Play With AI"}
+      />
     </div>
   );
 };

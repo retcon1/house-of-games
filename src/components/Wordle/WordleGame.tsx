@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { boardMatrix } from "./utils/boardMatrix";
 import Keyboard from "./Keyboard";
@@ -8,8 +8,8 @@ import GameOver from "./GameOver";
 import { generate } from "random-words";
 import { lookupWord } from "./utils/api";
 import { applyButtonAnimation } from "../../utils/buttonAnimation";
-
-//TODO Figure out a way to stop highlighting a letter in yellow if it has already been guessed
+import FancyButton from "../../utils/FancyButton";
+import { useNavigate } from "react-router-dom";
 
 export const WordleGame = () => {
   const [board, setBoard] = useState(boardMatrix);
@@ -25,8 +25,7 @@ export const WordleGame = () => {
     guessedWord: false,
   });
   const [dictMode, setDictMode] = useState(false);
-  const dictModeButtonRef = useRef<HTMLButtonElement>(null);
-  const modeBtn = useRef<HTMLDivElement | null>(null); // needed for animation
+  const modeBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const handleModeChange = () => {
     setBoard([
@@ -48,14 +47,13 @@ export const WordleGame = () => {
     setDisabledLetters([""]);
     setDictMode(!dictMode);
 
-    // Removes focus to avoid user making a guess and hitting the btn at same time
-    if (dictModeButtonRef.current) {
-      dictModeButtonRef.current.blur(); // Removes focus from the button
+    if (modeBtnRef.current) {
+      modeBtnRef.current.blur();
     }
   };
 
   useEffect(() => {
-    applyButtonAnimation(modeBtn);
+    applyButtonAnimation(modeBtnRef);
     if (!dictMode) {
       generateWordSet().then((words) => {
         setWordSet(words.wordSet);
@@ -69,7 +67,6 @@ export const WordleGame = () => {
   }, [dictMode]);
 
   const onSelectLetter = (keyVal: string) => {
-    // Prevents more letters being typed if all cells are filled
     if (currAttempt.letterPos > 4) return;
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
@@ -86,16 +83,13 @@ export const WordleGame = () => {
   };
 
   const onEnter = async () => {
-    // Prevents enter if all letters are not filled
     if (currAttempt.letterPos !== 5) return;
 
-    // Builds guess from inputted letters, ready to compare
     let currGuess = "";
     for (let i = 0; i < 5; i++) {
       currGuess += board[currAttempt.attempt][i];
     }
 
-    // Handles guess logic using limited word set
     if (!dictMode) {
       if (wordSet.has(currGuess.toLowerCase())) {
         setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
@@ -108,7 +102,6 @@ export const WordleGame = () => {
       }
     }
 
-    // Handles guess logic with call to dictionary API
     if (dictMode) {
       if (await lookupWord(currGuess.toLowerCase())) {
         setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
@@ -130,11 +123,18 @@ export const WordleGame = () => {
     }
   };
 
+  const navigate = useNavigate();
+  const homeNav = (e: MouseEvent) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <div className="wordle-game">
       <nav>
         <h1>Wordle Clone</h1>
       </nav>
+      <FancyButton className="home-btn" onClick={homeNav} text="Go Home" />
       <GameContext.Provider
         value={{
           board,
@@ -154,37 +154,29 @@ export const WordleGame = () => {
         <div className="wordle-container">
           <Board />
           {gameOver.gameOver ? <GameOver /> : <Keyboard />}
-          {dictMode ? (
-            <>
-              <p>Click here to go back to a limited, sensible list of words!</p>
-              <div className="btn-container" ref={modeBtn}>
-                <button
-                  className="mode-btn"
-                  onClick={handleModeChange}
-                  ref={dictModeButtonRef}
-                >
-                  Word Set Mode
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <p>
-                Click here to expand the word list to the entire dictionary!
-              </p>
-              <div className="btn-container" ref={modeBtn}>
-                <button
-                  className="mode-btn"
-                  onClick={handleModeChange}
-                  ref={dictModeButtonRef}
-                >
-                  Dictionary Mode
-                </button>
-              </div>
-            </>
-          )}
         </div>
       </GameContext.Provider>
+      {dictMode ? (
+        <>
+          <p>Click here to go back to a limited, sensible list of words!</p>
+          <FancyButton
+            className="mode-btn"
+            onClick={handleModeChange}
+            ref={modeBtnRef}
+            text="Word Set Mode"
+          />
+        </>
+      ) : (
+        <>
+          <p>Click here to expand the word list to the entire dictionary!</p>
+          <FancyButton
+            className="mode-btn"
+            onClick={handleModeChange}
+            ref={modeBtnRef}
+            text="Dictionary Mode"
+          />
+        </>
+      )}
     </div>
   );
-}
+};

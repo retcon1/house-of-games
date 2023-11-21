@@ -1,5 +1,6 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import FancyButton from "../utils/FancyButton";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -20,11 +21,15 @@ export const Home = () => {
   };
 
   return (
-    <div>
-      <h4>House of Games</h4>
-      <button onClick={calcNav}>Calculator</button>
-      <button onClick={wordleNav}>Wordle</button>
-      <button onClick={noughtsNav}>Noughts & Crosses</button>
+    <div className="home-screen">
+      <h1 className="title">House of Games</h1>
+      <FancyButton className="game-btn" onClick={calcNav} text="Calculator" />
+      <FancyButton className="game-btn" onClick={wordleNav} text="Wordle" />
+      <FancyButton
+        className="game-btn"
+        onClick={noughtsNav}
+        text="Noughts & Crosses"
+      />
     </div>
   );
 };

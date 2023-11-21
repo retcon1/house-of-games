@@ -5,7 +5,7 @@ import { RefObject } from "react";
 //   offsetX: number;
 // };
 
-export const applyButtonAnimation = (buttonRef: RefObject<HTMLDivElement>) => {
+export const applyButtonAnimation = (buttonRef: RefObject<HTMLButtonElement>) => {
   if (buttonRef.current) {
     buttonRef.current.classList.add("effect-container");
   }
