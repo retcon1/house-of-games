@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { aiMove, calculateWinner } from "./util";
 import { applyButtonAnimation } from "../../utils/buttonAnimation";
 import FancyButton from "../../utils/FancyButton";
+import { useNavigate } from "react-router-dom";
 
 export const TicTacToeGame = () => {
   const [board, setBoard] = useState<string[]>(Array(9).fill(null));
@@ -66,8 +67,15 @@ export const TicTacToeGame = () => {
     ? `Winner: ${winner}`
     : `Next player: ${xIsNext ? "X" : "O"}`;
 
+  const navigate = useNavigate();
+  const homeNav = (e: MouseEvent) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <div className="noughts-and-crosses">
+      <FancyButton className="home-btn" onClick={homeNav} text="Go Home" />
       <h1>Noughts & Crosses</h1>
       {oScore || xScore ? (
         <div className="scoreboard">

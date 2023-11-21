@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import { Board } from "./Board";
 import { boardMatrix } from "./utils/boardMatrix";
 import Keyboard from "./Keyboard";
@@ -9,6 +9,7 @@ import { generate } from "random-words";
 import { lookupWord } from "./utils/api";
 import { applyButtonAnimation } from "../../utils/buttonAnimation";
 import FancyButton from "../../utils/FancyButton";
+import { useNavigate } from "react-router-dom";
 
 export const WordleGame = () => {
   const [board, setBoard] = useState(boardMatrix);
@@ -122,11 +123,18 @@ export const WordleGame = () => {
     }
   };
 
+  const navigate = useNavigate();
+  const homeNav = (e: MouseEvent) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <div className="wordle-game">
       <nav>
         <h1>Wordle Clone</h1>
       </nav>
+      <FancyButton className="home-btn" onClick={homeNav} text="Go Home" />
       <GameContext.Provider
         value={{
           board,

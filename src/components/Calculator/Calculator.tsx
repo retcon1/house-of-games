@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import FancyButton from "../../utils/FancyButton";
 
 export const Calculator = () => {
   const [display, setDisplay] = useState("");
@@ -28,7 +30,7 @@ export const Calculator = () => {
   const symbolClick = (input: string) => {
     const lastChar = display.charAt(display.length - 1);
     // prevents user from using multiple symbols in a row
-    if (isSymbol(lastChar)) {
+    if (isSymbol(lastChar) || display === "") {
       return;
     }
     // continues equation if a symbol is pressed after user sees result
@@ -47,12 +49,12 @@ export const Calculator = () => {
     if (isSymbol(lastChar)) {
       return;
     }
+    // attempting to prevent numbers starting with 0 from erroring
     const formattedSum = sum.map((e) => {
       if (typeof e === "number") {
         return parseInt(e.toString());
       } else return e;
     });
-    console.log(formattedSum);
     setResult(eval(display));
   };
 
@@ -62,8 +64,15 @@ export const Calculator = () => {
     setDisplay("");
   };
 
+  const navigate = useNavigate();
+  const homeNav = (e: MouseEvent) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <div className="calculator">
+      <FancyButton className="home-btn" onClick={homeNav} text="Go Home" />
       <div className="display">
         <h6 style={{ wordWrap: "break-word" }}>
           {result ? result : display ? display : 0}

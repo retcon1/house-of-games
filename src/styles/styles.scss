@@ -77,6 +77,15 @@ body {
   }
 }
 
+.home-btn {
+  position: fixed;
+  width: 8rem;
+  top: 1rem;
+  right: 1rem;
+  opacity: 50%;
+  background: linear-gradient(90deg, #ce8837, #b53dfa);
+}
+
 .home-screen {
   margin: 5rem;
   display: flex;
@@ -85,6 +94,7 @@ body {
   flex-direction: column;
 
   .title {
+    text-align: center;
     font-size: 80px;
   }
 
@@ -151,7 +161,7 @@ body {
   text-align: center;
   background-color: #121212;
   width: 100vw;
-  height: 100vh;
+  height: 120vh;
   color: white;
 
   nav {
@@ -172,7 +182,7 @@ body {
 
   .wordle-container {
     width: 100vw;
-    height: 80vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     padding-top: 20px;
